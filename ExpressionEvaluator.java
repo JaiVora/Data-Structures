@@ -13,7 +13,8 @@ public class ExpressionEvaluator {
         System.out.println("Please specify the path of your text file: ");
         String path = sc.nextLine();
         File file = new File(path);
-        Scanner inputFile = new Scanner(file); //Throws FileNotFoundException if the path is invalid/ not found
+        Scanner inputFile = new Scanner(file); //Throws FileNotFoundException if the path is invalid/ not// fou//// nd
+        ProgramStack<Integer> stack = new ProgramStack<Integer>();
         inputQueue queue = new inputQueue();
         while (inputFile.hasNextLine())
         {
@@ -22,8 +23,42 @@ public class ExpressionEvaluator {
                 String word = words.next();
                 queue.Enqueue(word);
             }
-
+            int size = queue.size;
+            //Main logic of the program
+            //Keep going until the entire queue is empty
+            //If operator --> pop two elements
+            //If string's first character is integer then push to stack
+            while(size != 0){
+                String in = queue.Dequeue();
+                if(Character.isDigit(in.charAt(0))){
+                    int i = Integer.parseInt(in);
+                    stack.push(i);
+                }
+                else{
+                    int operand_1 = stack.pop();
+                    int operand_2 = stack.pop();
+                    switch (in){
+                        case "+":
+                            stack.push(operand_1+operand_2);
+                            break;
+                        case "-":
+                            stack.push(operand_1-operand_2);
+                            break;
+                        case "*":
+                            stack.push(operand_1*operand_2);
+                            break;
+                        case "/":
+                            stack.push(operand_1/operand_2);
+                            break;
+                        default:
+                            System.out.println("Cant process that operator yet");
+                            break;
+                    }
+                }
+                size--;
+            }
         }
+        System.out.println(stack.peek());
     }
     //Queue Implementation using Linked List
     public static class inputQueue{
@@ -69,7 +104,7 @@ public class ExpressionEvaluator {
     }
 
     //Stack implementation of Generic type using Linked List
-    public class ProgramStack<T>{
+    public static class ProgramStack<T>{
         private class Node{
             T data;
             Node next;
@@ -81,7 +116,7 @@ public class ExpressionEvaluator {
         public void push(T obj){
             Node newNode = new Node(obj);
             if(top != null){
-               top = top.next;
+               newNode.next = top;
             }
             top = newNode;
         }
