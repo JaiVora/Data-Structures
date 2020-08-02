@@ -9,18 +9,22 @@ import java.util.Scanner;
 public class ExpressionEvaluator {
     //Initiating by Reading the File in the main method
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner sc= new Scanner(System.in);
+       // Scanner sc= new Scanner(System.in);
         System.out.println("Please specify the path of your text file: ");
-        String path = sc.nextLine();
+      //  String path = sc.nextLine();
+        String path = "/home/jai/jai.txt";
         File file = new File(path);
         Scanner inputFile = new Scanner(file); //Throws FileNotFoundException if the path is invalid/ not// fou//// nd
         ProgramStack<Integer> stack = new ProgramStack<Integer>();
         inputQueue queue = new inputQueue();
+
         while (inputFile.hasNextLine())
         {
+            boolean flag = false;
             Scanner words = new Scanner(inputFile.nextLine());
             while(words.hasNext()){
                 String word = words.next();
+                System.out.print(word + " ");
                 queue.Enqueue(word);
             }
             int size = queue.size;
@@ -30,35 +34,63 @@ public class ExpressionEvaluator {
             //If string's first character is integer then push to stack
             while(size != 0){
                 String in = queue.Dequeue();
+                char c = in.charAt(0);
+              //  System.out.println(c);
                 if(Character.isDigit(in.charAt(0))){
                     int i = Integer.parseInt(in);
                     stack.push(i);
                 }
-                else{
-                    int operand_1 = stack.pop();
-                    int operand_2 = stack.pop();
-                    switch (in){
-                        case "+":
-                            stack.push(operand_1+operand_2);
-                            break;
-                        case "-":
-                            stack.push(operand_1-operand_2);
-                            break;
-                        case "*":
-                            stack.push(operand_1*operand_2);
-                            break;
-                        case "/":
-                            stack.push(operand_1/operand_2);
-                            break;
-                        default:
-                            System.out.println("Cant process that operator yet");
-                            break;
+                else if(c == '+' || c == '-' || c == '/' || c == '*' || c =='^'){
+                   // System.out.println("Coming here");
+                    try{
+                        int operand_1 = stack.pop();
+                        int operand_2 = stack.pop();
+                        switch (in){
+                            case "+":
+                                stack.push(operand_2+operand_1);
+                                break;
+                            case "-":
+                                stack.push(operand_2-operand_1);
+                                break;
+                            case "*":
+                                stack.push(operand_2*operand_1);
+                                break;
+                            case "/":
+                                stack.push(operand_2/operand_1);
+                                break;
+                            case "^":
+                                double ans = Math.pow(operand_2,operand_1);
+                                int ans2 = (int)ans;
+                                stack.push(ans2);
+                                break;
+                            default:
+                                System.out.println("Cant process that operator yet");
+                                break;
+                        }
+                    }
+                    catch (NullPointerException e){
+                        flag = true;
+                        break;
                     }
                 }
+                else if(Character.isLetter(c)){
+                    //Implement a Hash Table
+                    //Add values to the hash table
+                    //in variable is the key
+                }
                 size--;
+
             }
+
+            if(flag){
+                System.out.println(": Invalid Expression");
+            }
+            else{
+                System.out.println(": "+stack.peek());
+            }
+            stack.clear();
         }
-        System.out.println(stack.peek());
+
     }
     //Queue Implementation using Linked List
     public static class inputQueue{
