@@ -1,3 +1,13 @@
+/*
+ *Author: Jai Vora
+ *Date: 12/17/2019
+ *The Table class is an address book implementation, that stores a name and the address associated with the name. 
+ *The program presents the user a menu with a choice of operations:add a contact(name and address) look  up a contact(displaying  the  associated  address)
+ *Update the address for a contact ,delete a contact,display all contacts, and quit.
+ *Furthermore, the program will allow a user to send a text message to a contact and to display all messages to a contact.
+ *The program implements a Dynamic Array and a LinkedList to provide the specified functionality. 
+*/
+
 import java.util.Scanner;
 
 public class Table {
