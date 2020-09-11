@@ -20,7 +20,7 @@ public class bst {
      * @param data This is the element to be inserted
      */
     public void insert(int data){
-        insertAt(root,data);
+        root = insertAt(root,data);
     }
 
     /***
@@ -74,5 +74,108 @@ public class bst {
         return false;
     }
 
+    /***
+     * This method prints the tree in order: Root -> left -> right
+     * @param root This is the root of the tree
+     * @return nothing
+     */
+    private void preOrder(Node root){
+        if(root == null) return;
+        System.out.println(root.data);
+        preOrder(root.left);
+        preOrder(root.right);
+    }
 
+    /***
+     * This method calls the preOrder private method to print the tree in preOrder manner
+     * @return nothing
+     */
+    public void preOrder(){
+        preOrder(root);
+    }
+    /***
+     * This method prints the tree in the order: left -> root -> right
+     * @param root This is the root of the tree
+     * @return nothing
+     */
+    private void inOrder(Node root){
+        if(root == null) return;
+        inOrder(root.left);
+        System.out.println(root.data);
+        inOrder(root.right);
+    }
+
+    /***
+     * This method calls the inOrder private method to print the tree in inOrder manner
+     * @return nothing
+     */
+    public void inOrder(){
+        inOrder(root);
+    }
+    /***
+     * This method prints the tree in order:  left -> right -> root
+     * @param root This is the root of the tree
+     * @return nothing
+     */
+    private void postOrder(Node root){
+        if(root == null) return;
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.println(root.data);
+    }
+
+    /***
+     * This method calls the preOrder private method to print the tree in preOrder manner
+     * @return nothing
+     */
+    public void postOrder(){
+        postOrder(root);
+    }
+
+
+    public void delete(int data){
+        root = delete(root,data);
+    }
+    /***
+     * This method deletes a specified node in the BST, if found.
+     * @param data This is the value of the node to be deleted
+     * @param root This is the root of the tree
+     */
+    private Node delete(Node root, int data){
+        if(root == null) return root;
+        if(data < root.data){
+            root.left = delete(root.left,data);
+        }
+        else if(data > root.data){
+            root.right = delete(root.right,data);
+        }
+        else{
+            if(root.left == null){
+                return root.right;
+            }
+            if(root.right == null){
+                return root.left;
+            }
+
+            root.data = minValue(root.right);
+            delete(root.right,root.data);
+        }
+        return root;
+    }
+
+    /***
+     * This is a helper method to find the element with the minimum value in the BST
+      * @param root This is the root of the subtree, passed by the private method delete
+     * @return int This is the minimum element in the BST
+     */
+    private int minValue(Node root)
+    {
+        int min = root.data;
+        while (root.left != null)
+        {
+            min = root.left.data;
+            root = root.left;
+        }
+        return min;
+    }
 }
